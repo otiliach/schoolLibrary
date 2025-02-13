@@ -1,6 +1,5 @@
 package com.school.library.service;
 
-import com.oracle.svm.core.annotate.Inject;
 import com.school.library.model.Admin;
 import com.school.library.model.RegisterDto;
 import com.school.library.repository.AdminRepository;
