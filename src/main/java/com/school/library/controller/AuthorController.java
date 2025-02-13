@@ -20,6 +20,15 @@ public class AuthorController {
         libraryService.saveAuthor(author);
     }
 
+    @PutMapping("/author/save/{id}")
+    public @ResponseBody Author updateAuthor (@RequestBody Author author, @PathVariable(value = "id") Long  authorId) {
+        return libraryService.updateAuthor(author, authorId);
+    }
+    @GetMapping("/author/{id}")
+    public @ResponseBody Author getAuthorById(@PathVariable(value = "id") String  authorId) {
+        return libraryService.getAuthorById(Long.valueOf(authorId));
+    }
+
     @GetMapping("/all-authors")
     public @ResponseBody List<Author> getAllSkills() {
         return libraryService.getAllAuthors();
