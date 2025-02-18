@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/library")
 public class DomainController {
     private final LibraryService libraryService;
 
@@ -16,8 +17,8 @@ public class DomainController {
     }
 
     @PostMapping("/domain/save")
-    public @ResponseBody void saveDomain(@RequestBody Domain domain) {
-        libraryService.saveDomain(domain);
+    public @ResponseBody Domain saveDomain(@RequestBody Domain domain) {
+        return libraryService.saveDomain(domain);
     }
 
     @PutMapping("/domain/save/{id}")

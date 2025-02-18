@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/biblioteca")
+@RequestMapping("/library")
 public class AuthorController {
     private final LibraryService libraryService;
 
     public AuthorController(LibraryService libraryService) {
         this.libraryService = libraryService;
     }
-    @PostMapping("/autor/save")
-    public @ResponseBody void saveAuthor(@RequestBody Author author) {
-        libraryService.saveAuthor(author);
+    @PostMapping("/author/save")
+    public @ResponseBody Author saveAuthor(@RequestBody Author author) {
+        return libraryService.saveAuthor(author);
     }
 
     @PutMapping("/author/save/{id}")
