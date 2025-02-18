@@ -10,8 +10,13 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class LibraryApplication {
+
+	private final AdminRepository adminRepository;
+
 	@Autowired
-	private AdminRepository adminRepository;
+    public LibraryApplication(AdminRepository adminRepository) {
+        this.adminRepository = adminRepository;
+    }
 
 	@Bean
 	public CommandLineRunner seedDB(){
