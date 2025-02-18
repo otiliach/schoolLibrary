@@ -6,10 +6,10 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "author")
+@Table(name = "authors_table")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
 

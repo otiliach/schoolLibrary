@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "book")
+@Table(name = "books_table")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id = 0L;
     private String title;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "books_authors",
             joinColumns = @JoinColumn(name = "book_id"),
@@ -20,7 +20,7 @@ public class Book {
     private List<Author> authors;
     private String isbn;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Domain domain;
     private String description;
 

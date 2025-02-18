@@ -1,18 +1,20 @@
 package com.school.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "domain")
+@Table(name = "domains_table")
 public class Domain {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "domain", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Book> books;
 
     public Domain(String name) {
