@@ -6,7 +6,12 @@ import com.school.library.model.Domain;
 import com.school.library.repository.AuthorRepository;
 import com.school.library.repository.BookRepository;
 import com.school.library.repository.DomainRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +23,16 @@ public class LibraryService {
     private final BookRepository bookRepository;
     private final DomainRepository domainRepository;
 
-    public LibraryService(final AuthorRepository authorRepository,final BookRepository bookRepository,final DomainRepository domainRepository) {
+    @Autowired
+    public LibraryService(final AuthorRepository authorRepository, final BookRepository bookRepository, final DomainRepository domainRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.domainRepository = domainRepository;
     }
 
     //Author
-    public void saveAuthor(Author author) {
-        authorRepository.save(author);
+    public Author saveAuthor(Author author) {
+        return authorRepository.save(author);
     }
 
     public Author getAuthorById(Long authorId) {
@@ -52,6 +58,7 @@ public class LibraryService {
     }
 
     //Book
+    @Transactional
     public void saveBook(Book book) {
         if (domainRepository.existsById(book.getDomain().getId())) {
 
@@ -68,6 +75,9 @@ public class LibraryService {
             }
             book.setAuthors(new ArrayList<>(authorList));
             book.setDomain(domain);
+
+            System.out.println("Domain ID: " + book.getDomain().getId());
+            System.out.println("Domain Name: " + book.getDomain().getName());
 
             bookRepository.save(book);
         }
@@ -103,13 +113,44 @@ public class LibraryService {
         return (List<Book>) bookRepository.findAll();
     }
 
-    public void deleteBook(Book book) {
-        bookRepository.deleteById(book.getId());
+    public Page<Book> searchBooks(String author, String title, List<Domain> categories, Pageable pageable) {
+
+        ArrayList<Book> books = new ArrayList<>();
+        this.bookRepository.findAll().forEach(books::add);
+
+        List<Book> booksByAuthor = new ArrayList<>();
+        if(author!=null && !author.isEmpty()) {
+            booksByAuthor = books.stream()
+                    .filter(book -> book.getAuthors().stream()
+                            .anyMatch(author1 -> author1.getFullName().contains(author))).toList();
+        } else {
+            booksByAuthor = books;
+        }
+
+        List<Book> booksByAuthorAndTitle = new ArrayList<>();
+        if(title!=null && !title.isEmpty()) {
+            booksByAuthorAndTitle = booksByAuthor.stream().filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase())).toList();
+        } else {
+            booksByAuthorAndTitle = booksByAuthor;
+        }
+
+        List<Book> booksByAuthorTitleAndDomains = new ArrayList<>();
+        if(categories!=null && !categories.isEmpty()) {
+            booksByAuthorTitleAndDomains = booksByAuthorAndTitle.stream().filter(book -> categories.contains(book.getDomain())).toList();
+        } else {
+            booksByAuthorTitleAndDomains = booksByAuthorAndTitle;
+        }
+
+        return new PageImpl<>(booksByAuthorTitleAndDomains);
+    }
+
+    public void deleteBook(Long bookId) {
+        bookRepository.deleteById(bookId);
     }
 
     //Domain
-    public void saveDomain(Domain domain) {
-        domainRepository.save(domain);
+    public Domain saveDomain(Domain domain) {
+        return domainRepository.save(domain);
     }
 
     public Domain updateDomain(Domain domain, Long domainId) {
