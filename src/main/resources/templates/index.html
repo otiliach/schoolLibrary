@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="eng">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +38,7 @@
         function createdCard(book){
             console.log(isAuthenticated);
             return `
-<div class="card mb-3" style="max-width: 540px; margin: 2rem">
+<div class="card mb-3" style="max-width: 400px; margin: 1rem">
   <div class="row g-0">
     <div class="col-md-4">
        <img src="images/book.jpg" class="img-fluid rounded-start" alt="...">
@@ -47,6 +47,24 @@
       <div class="card-body">
         <h5 class="card-title">${book.title}</h5>
         <p class="card-text">${book.authors[0].fullName}</p>
+       ${!isAuthenticated ?`
+<button type="button" class="button" data-bs-toggle="modal" data-bs-target="#detailsModal-${book.id}">Vezi detalii</button>
+<div class="modal fade" id="detailsModal-${book.id}" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="detailsModalLabel">${book.title}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="card-text">Autor: ${book.authors[0].fullName}</p>
+        <p class="card-text">ISBN: ${book.isbn}</p>
+        <p class="card-text" style="white-space: pre-line">Descriere: ${book.description}</p>
+      </div>
+      </div>
+    </div>
+</div>
+         `:""}
 
 ${isAuthenticated ? `
         <input type="hidden" name="bookId" value="${book.id}"/>
@@ -119,7 +137,6 @@ ${isAuthenticated ? `
 
                 var ids = $('input:checkbox:checked').map(function () {
                     console.log(this.id);
-                    //return this.id;
                     return $(this).val();
                 }).get();
 
