@@ -44,9 +44,24 @@
             margin-left: 30%;
         }
 
+        #count_message {
+            margin-top: -20px;
+            margin-left: 5px;
+        }
+
     </style>
 
     <script>
+        $(document).ready(function () {
+            var text_max = 255;
+            $('#count_message').html('0 / ' + text_max );
+
+            $('#book-description').keyup(function() {
+                var text_length = $('#book-description').val().length;
+
+                $('#count_message').html(text_length + ' / ' + text_max);
+            });
+        });
 
         async function getDomains(book) {
             const response = await fetch('/library/all-domains', {
@@ -304,9 +319,10 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-description">Descriere: </span>
-            <textarea class="form-control" rows="3" id="book-description"
-                      required></textarea>
+            <textarea class="form-control" rows="3" id="book-description" name="book-description"
+                      maxlength="255" required></textarea>
         </div>
+        <span class="pull-right label label-default" id="count_message"></span>
 
         <button class="button submit" id="save-book-button">Salvare modificări</button>
     </form>
