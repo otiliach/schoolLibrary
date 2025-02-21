@@ -3,7 +3,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:21-jdk
-COPY --from=build /target/library-0.0.1.jar app.jar
+COPY --from=builder /target/library-0.0.1.jar library-0.0.1.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "library-0.0.1.jar"]
