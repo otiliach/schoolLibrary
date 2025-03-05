@@ -200,7 +200,7 @@ ${isAuthenticated ? `
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="" id="navbarSupportedContent">
             <form sec:authorize="isAuthenticated()" method="post" action="/logout">
                 <input type="hidden" th:name="${_csrf.parameterName}"
                        th:value="${_csrf.token}"/>
@@ -223,9 +223,9 @@ ${isAuthenticated ? `
     <h1 class="p" th:text="${message}"></h1>
     <div class="input-group mb-3">
         <span class="input-group-text"> Introdu numele autorului:</span>
-        <input type="text" class="form-control" id="search-author" placeholder="Ex: Mihai Eminescu" aria-label="author">
+        <input type="text" class="form-control" id="search-author" placeholder="Ex: Mihai Eminescu" style="width: 175px;" aria-label="author">
         <span class="input-group-text"> Introdu titlul cărții:</span>
-        <input type="text" class="form-control" id="search-title" placeholder="Ex:  Poezii" aria-label="title">
+        <input type="text" class="form-control" id="search-title" placeholder="Ex:  Poezii" style="width: 100px;" aria-label="title">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             FILTREAZĂ DUPĂ
         </button>
